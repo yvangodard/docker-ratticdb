@@ -17,8 +17,7 @@ RUN rm /etc/apt/sources.list
 ADD sources.list /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install nano
-RUN apt-get upgrade -y
-RUN apt-get install -y gettext --force-yes
+RUN apt-get upgrade --force-yes
 RUN cd /opt/RatticWeb-1.3.1/ && \
     pip install -r requirements-sqlite.txt
 RUN cd /opt/RatticWeb-1.3.1/ && \
@@ -28,6 +27,7 @@ RUN cd /opt/RatticWeb-1.3.1/ && \
 RUN cd /opt/RatticWeb-1.3.1/ && \
     ./manage.py demosetup
 ADD settings.py /opt/RatticWeb-1.3.1/ratticweb/
+RUN apt-get install gettext --force-yes
 RUN cd /opt/RatticWeb-1.3.1/ && \
 	./manage.py compilemessages
 RUN chmod +x start-apache.sh && chown www-data /opt/RatticWeb-1.3.1/ && chown www-data:www-data /opt/RatticWeb-1.3.1/rattic.db
