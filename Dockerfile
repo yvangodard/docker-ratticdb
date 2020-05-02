@@ -15,7 +15,7 @@ ADD requirements-sqlite.txt /opt/RatticWeb-1.3.1/
 ADD local.cfg /opt/RatticWeb-1.3.1/conf/local.cfg
 RUN rm /etc/apt/sources.list
 ADD sources.list /etc/apt/sources.list
-RUN apt-get update
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN apt-get install nano -y
 RUN apt-get upgrade -y
 RUN cd /opt/RatticWeb-1.3.1/ && \
