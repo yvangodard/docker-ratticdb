@@ -1,6 +1,6 @@
 FROM vikas027/debian-apache2-wheezy
 
-MAINTAINER Vikas Kumar "vikas@reachvikas.com"
+MAINTAINER Yvan GODARD "godardyvan@gmail.com"
 
 # Apache
 ADD rattic.conf /etc/apache2/conf.d/sites-enabled/rattic
@@ -13,6 +13,12 @@ RUN cd /opt/ && unzip v1.3.1.zip
 ADD requirements-base.txt /opt/RatticWeb-1.3.1/requirements-base.txt
 ADD requirements-sqlite.txt /opt/RatticWeb-1.3.1/
 ADD local.cfg /opt/RatticWeb-1.3.1/conf/local.cfg
+RUN rm /etc/apt/sources.list
+ADD sources.list /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get install nano
+RUN apt-get upgrade -y
+RUN apt-get install -y gettext --force-yes
 RUN cd /opt/RatticWeb-1.3.1/ && \
     pip install -r requirements-sqlite.txt
 RUN cd /opt/RatticWeb-1.3.1/ && \
@@ -22,6 +28,8 @@ RUN cd /opt/RatticWeb-1.3.1/ && \
 RUN cd /opt/RatticWeb-1.3.1/ && \
     ./manage.py demosetup
 ADD settings.py /opt/RatticWeb-1.3.1/ratticweb/
+RUN cd /opt/RatticWeb-1.3.1/ && \
+	./manage.py compilemessages
 RUN chmod +x start-apache.sh && chown www-data /opt/RatticWeb-1.3.1/ && chown www-data:www-data /opt/RatticWeb-1.3.1/rattic.db
 
 # Clean Up 
